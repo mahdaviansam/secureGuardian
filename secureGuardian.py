@@ -122,12 +122,12 @@ def print_ip_ownership(ip_ranges):
 start_time = time.time()
 while True:
     current_time = time.time()
-    print("SALAMMMMM", traffic_counts)
+    # print("SALAMMMMM", traffic_counts)
     ip_ranges = find_ip_ranges(traffic_counts, 3)
     print_ip_ownership(ip_ranges)
     if current_time - start_time >= restart_time:
-        message = f"CHECK HEALTH : {server_name} traffic_counts: {traffic_counts}"
-        send_telegram_message(message)
+        # message = f"CHECK HEALTH : {server_name} traffic_counts: {traffic_counts}"
+        # send_telegram_message(message)
         traffic_counts = {}
         start_time = current_time
     if alaki < 1:
