@@ -126,7 +126,8 @@ while True:
     ip_ranges = find_ip_ranges(traffic_counts, 3)
     print_ip_ownership(ip_ranges)
     if current_time - start_time >= restart_time:
-        print("tekrar")
+        message = f"CHECK HEALTH : {server_name} traffic_counts: {traffic_counts}"
+        send_telegram_message(message)
         traffic_counts = {}
         start_time = current_time
     if alaki < 1:
