@@ -2,6 +2,11 @@
 systemctl stop secureGuardian
 systemctl disable secureGuardian
 
+# Install required packages
+echo "Installing required packages..."
+apt update
+apt install -y python3-pip
+
 # Remove the old service file
 rm -rf /etc/systemd/system/secureGuardian.service
 
