@@ -2,11 +2,10 @@
 
 import sys
 import time
-import argparse
 import requests
-import threading
 import subprocess
 from scapy.all import *
+import threading
 
 
 def main(server_name):
@@ -27,15 +26,6 @@ def main(server_name):
         "157.240.11.51",
         "216.239.35.8",
     ]
-
-    if len(sys.argv) == 2:
-        server_name = sys.argv[1]
-        print(f"{server_name} name server")
-    elif len(sys.argv) > 2:
-        print("Usage: python SecureGuardian.py <server_name>")
-        sys.exit(1)
-    else:
-        server_name = input("Enter server name: ")
 
     def send_telegram_message(message):
         bot_token = "7077359585:AAGmG8h0U9b4K22yEz6UVxPQzv1sLD4dSto"
@@ -129,12 +119,11 @@ def main(server_name):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Description of your program")
-    parser.add_argument("server_name", type=str, help="The name of the server")
-    args = parser.parse_args()
+    if len(sys.argv) == 2:
+        server_name = sys.argv[1]
+    else:
+        server_name = input("Enter server name: ")
 
-    download_thread = threading.Thread(
-        target=main, args=(args.server_name,), name="main"
-    )
+    download_thread = threading.Thread(target=main, args=(server_name,), name="main")
     download_thread.daemon = True  # Set the thread as a daemon
     download_thread.start()
