@@ -24,6 +24,7 @@ sudo mv secureGuardian.py /usr/local/bin/secureGuardian
 sudo chown root:root /usr/local/bin/secureGuardian
 
 # Install dependencies
+# Install dependencies
 pip install scapy requests
 
 # Set up systemd service
