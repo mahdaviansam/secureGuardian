@@ -118,14 +118,9 @@ while True:
         print("tekrar")
         traffic_counts = {}
         start_time = current_time
-    if alaki < 1:
+    if alaki <= 1:
         messagezx = f"START SERVER : {server_name}"
         send_telegram_message(messagezx)
         alaki = alaki + 1
-        time.sleep(1)
+        time.sleep(4)
     sniff_traffic(white_list)
-
-
-# background_thread = threading.Thread(target=background)
-# background_thread.daemon = True
-# background_thread.start()
