@@ -124,6 +124,7 @@ def print_ip_ownership(ip_ranges):
 
 def main():
     start_time = time.time()
+    global traffic_counts
     while True:
         current_time = time.time()
         ip_ranges = find_ip_ranges(traffic_counts, 3)
