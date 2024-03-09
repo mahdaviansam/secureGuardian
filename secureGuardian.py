@@ -28,7 +28,7 @@ white_list = [
 
 def send_telegram_message(message):
     bot_token = "7077359585:AAGmG8h0U9b4K22yEz6UVxPQzv1sLD4dSto"
-    usernames = ["98801449", "98801449"]
+    usernames = ["98801449"]
     for username in usernames:
         url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
         data = {"chat_id": username, "text": message}
