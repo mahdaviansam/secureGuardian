@@ -118,18 +118,19 @@ def print_ip_ownership(ip_ranges):
             get_ip_ownership(ips[0], white_list)
 
 
-def run_sniffer():
-    start_time = time.time()
+def run_sniffer(start_time, traffic_counts):
     while True:
         current_time = time.time()
         ip_ranges = find_ip_ranges(traffic_counts, 3)
-        print_ip_ownership(ip_ranges)
+        print_ip_ownership(ip_ranges, white_list)
         if current_time - start_time >= restart_time:
             traffic_counts = {}
             start_time = current_time
         sniff_traffic(white_list)
 
 
-sniffer_thread = threading.Thread(target=run_sniffer)
+start_time = time.time()
+
+sniffer_thread = threading.Thread(target=run_sniffer, args=(start_time, traffic_counts))
 sniffer_thread.daemon = True
 sniffer_thread.start()
