@@ -1,6 +1,20 @@
 #!/bin/bash
 
+set -e
+
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Check if Python 3 and pip are installed
+if ! command_exists python3 || ! command_exists pip3; then
+    echo "Error: Python 3 or pip is not installed. Please install them first."
+    exit 1
+fi
+
 # Install required packages
+echo "Installing required packages..."
 apt update
 apt install -y python3-pip
 
@@ -37,4 +51,5 @@ fi
 echo "secureGuardian package installed successfully."
 
 # Install Python dependencies
-pip install requests scapy
+echo "Installing Python dependencies..."
+pip3 install requests scapy
