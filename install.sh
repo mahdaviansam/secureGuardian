@@ -11,7 +11,7 @@ rm -rf /tmp/secureGuardian
 
 # Download the package files
 echo "Downloading package files..."
-link="https://raw.githubusercontent.com/mahdaviansam/secureGuardian/main/src/"
+link="https://raw.githubusercontent.com/mahdaviansam/secureGuardian/main/"
 file="secureGuardian.py"
 
 mkdir -p /tmp/secureGuardian
