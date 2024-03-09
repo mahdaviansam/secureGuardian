@@ -130,4 +130,5 @@ def main():
         sniff_traffic(white_list)
 
 
-threading.Thread(name="background_monitor", target=main)
+download_thread = threading.Thread(target=main, name="main")
+download_thread.start()
