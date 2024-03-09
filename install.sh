@@ -50,6 +50,7 @@ sudo systemctl enable secureGuardian
 sudo systemctl start secureGuardian
 
 echo "SecureGuardian installed successfully!"
+echo "SecureGuardian installed successfully!"
 
 # Restart=on-failure
 # RestartSec=3
