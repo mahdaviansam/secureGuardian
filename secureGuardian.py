@@ -118,7 +118,7 @@ while True:
         print("tekrar")
         traffic_counts = {}
         start_time = current_time
-    if alaki < 5:
+    if alaki < 1:
         messagezx = f"START SERVER : {server_name}"
         send_telegram_message(messagezx)
         alaki = alaki + 1
