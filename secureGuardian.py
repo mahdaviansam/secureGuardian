@@ -76,7 +76,6 @@ def main():
             if white_list
             else " "
         )
-        print(f"white_list_filter: {white_list_filter}")
         time.sleep(0.01)
         sniff(
             filter=f"udp and not (port 53 or port 443) {white_list_filter}",
@@ -130,5 +129,7 @@ def main():
         sniff_traffic(white_list)
 
 
-download_thread = threading.Thread(target=main, name="main")
-download_thread.start()
+if __name__ == "__main__":
+    thread = threading.Thread(target=main, name="main")
+    thread.daemon = True  # Set the thread as a daemon
+    thread.start()
