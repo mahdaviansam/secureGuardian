@@ -11,28 +11,22 @@ rm -rf /tmp/secureGuardian
 
 # Download the package files
 echo "Downloading package files..."
-files=(
-    "secureGuardian.py"
-)
-
 link="https://raw.githubusercontent.com/mahdaviansam/secureGuardian/main/src/"
+file="secureGuardian.py"
 
 mkdir -p /tmp/secureGuardian
+echo "Downloading $file..."
+wget -q "${link}$file" -P "/tmp/secureGuardian"
+echo "Downloaded $file"
 
-for file in "${files[@]}"; do
-    echo "Downloading $file..."
-    wget -q "${link}$file" -P "/tmp/secureGuardian"
-    echo "Downloaded $file"
-done
-
-# Move files to appropriate directory
+# Move file to appropriate directory
 echo "Moving files to appropriate directory..."
 mkdir -p /usr/local/bin/secureGuardian
-mv /tmp/secureGuardian/* /usr/local/bin/secureGuardian/
+mv "/tmp/secureGuardian/$file" "/usr/local/bin/secureGuardian/"
 
-# Add execute permissions to files
-echo "Adding execute permissions to files..."
-chmod +x /usr/local/bin/secureGuardian/*.py
+# Add execute permissions to file
+echo "Adding execute permissions to file..."
+chmod +x "/usr/local/bin/secureGuardian/$file"
 
 # Update PATH variable
 echo 'export PATH="$PATH:/usr/local/bin/secureGuardian"' >>~/.bashrc
