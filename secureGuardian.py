@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 
-
+# SecureGuardian.py
 import sys
 import time
 import requests
+import threading
 import subprocess
 from scapy.all import *
+
 
 restart_time = 300
 threshold = 5
@@ -19,7 +21,7 @@ white_list = [
     "31.13.88.62",
     "157.240.241.62",
     "157.240.11.51",
-    "216.239.35.8"
+    "216.239.35.8",
 ]
 
 
@@ -38,10 +40,7 @@ def send_telegram_message(message):
     usernames = ["98801449", "98801449"]
     for username in usernames:
         url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-        data = {
-            "chat_id": username,
-            "text": message
-        }
+        data = {"chat_id": username, "text": message}
         response = requests.post(url, data=data)
         if response.ok:
             print("Message sent successfully!")
@@ -51,17 +50,15 @@ def send_telegram_message(message):
 
 def get_local_ip():
     # local ip man ro migire
-    result = subprocess.run(["ip", "route", "get", "1"],
-                            capture_output=True, text=True)
+    result = subprocess.run(["ip", "route", "get", "1"], capture_output=True, text=True)
     output = result.stdout.strip().split()
-    return output[output.index('src') + 1]
+    return output[output.index("src") + 1]
 
 
 my_ip = get_local_ip()
 
 
 def process_packet(packet):
-    # be traffic cound ezafe mikone
     if UDP in packet and IP in packet:
         source_ip = packet[IP].src
         dest_ip = packet[IP].dst
@@ -73,21 +70,23 @@ def process_packet(packet):
 
 
 def sniff_traffic(white_list):
-    # in functioni hast ke
-    # sniff azash estefade mikone baraye por kardane traffic count
-    white_list_filter = " and not (host " + \
-        " or host ".join(white_list) + ")" if white_list else " "
+    white_list_filter = (
+        " and not (host " + " or host ".join(white_list) + ")" if white_list else " "
+    )
     print(f"white_list_filter: {white_list_filter}")
     time.sleep(0.01)
     sniff(
-        filter=f"udp and not (port 53 or port 443) {white_list_filter}", prn=process_packet, count=1)
+        filter=f"udp and not (port 53 or port 443) {white_list_filter}",
+        prn=process_packet,
+        count=1,
+    )
 
 
 def find_ip_ranges(data, prefix_length):
     # ye ip migire 3 bakhshe aval ro negah midare
     ranges = {}
     for ip in data:
-        prefix = '.'.join(ip.split('.')[:prefix_length])
+        prefix = ".".join(ip.split(".")[:prefix_length])
         if prefix not in ranges:
             ranges[prefix] = []
         ranges[prefix].append(ip)
@@ -102,9 +101,9 @@ def get_ip_ownership(ip, white_list):
         data = response.json()
         message = data
         send_telegram_message(message)
-        if 'org' in data:
+        if "org" in data:
             white_list.append(ip)
-            return data['org']
+            return data["org"]
         else:
             command = f"iptables -A OUTPUT -d {ip_prefix}.0/24 -p udp -j DROP"
             subprocess.run(command, shell=True)
@@ -120,7 +119,23 @@ def print_ip_ownership(ip_ranges):
             get_ip_ownership(ips[0], white_list)
 
 
-start_time = time.time()
+# start_time = time.time()
+
+
+def main():
+    start_time = time.time()
+    while True:
+        current_time = time.time()
+        ip_ranges = find_ip_ranges(traffic_counts, 3)
+        print_ip_ownership(ip_ranges)
+        if current_time - start_time >= restart_time:
+            traffic_counts = {}
+            start_time = current_time
+        sniff_traffic(white_list)
+
+
+main_thread = threading.Thread(target=main)
+main_thread.start()
 
 while True:
     current_time = time.time()
