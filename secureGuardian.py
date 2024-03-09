@@ -38,6 +38,10 @@ def send_telegram_message(message):
             print("Failed to send message!", response)
 
 
+messagez = f"START SERVER : {server_name}"
+send_telegram_message(messagez)
+
+
 def get_local_ip():
     # local ip man ro migire
     result = subprocess.run(["ip", "route", "get", "1"], capture_output=True, text=True)
