@@ -35,7 +35,7 @@ After=network.target
 
 [Service]
 ExecStart=/usr/local/bin/secureGuardian
-Restart=always
+Restart=on-failure
 RestartSec=3
 
 [Install]
@@ -52,3 +52,4 @@ sudo systemctl start secureGuardian
 echo "SecureGuardian installed successfully!"
 
 # Restart=on-failure
+# Restart=always
