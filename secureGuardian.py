@@ -107,9 +107,11 @@ def background():
 
     while True:
         current_time = time.time()
+        print("SALAMMMMM")
         ip_ranges = find_ip_ranges(traffic_counts, 3)
         print_ip_ownership(ip_ranges)
         if current_time - start_time >= restart_time:
+            print("tekrar")
             traffic_counts = {}
             start_time = current_time
         sniff_traffic(white_list)
