@@ -1,13 +1,24 @@
-#!/bin/bash
+# Stop and disable the old service if it exists
+sudo systemctl stop secureGuardian
+sudo systemctl disable secureGuardian
 
-# Download the script
-curl -o SecureGuardian.py https://raw.githubusercontent.com/mahdaviansam/secureGuardian/main/SecureGuardian.py
+# Remove the old service file
+sudo rm /etc/systemd/system/secureGuardian.service
+
+# Remove the old script if it exists
+sudo rm /usr/local/bin/secureGuardian.py
+
+# Remove any old dependencies
+# pip uninstall -y scapy requests
+
+# Download the new script
+curl -o secureGuardian.py https://raw.githubusercontent.com/mahdaviansam/secureGuardian/main/secureGuardian.py
 
 # Make it executable
-chmod +x SecureGuardian.py
+chmod +x secureGuardian.py
 
 # Move it to /usr/local/bin
-sudo mv SecureGuardian.py /usr/local/bin/secureGuardian
+sudo mv secureGuardian.py /usr/local/bin/secureGuardian
 
 # Set ownership
 sudo chown root:root /usr/local/bin/secureGuardian
