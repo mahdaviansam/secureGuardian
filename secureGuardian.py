@@ -119,9 +119,10 @@ while True:
         traffic_counts = {}
         start_time = current_time
     if alaki < 5:
-        messagez = f"START SERVER : {server_name}"
-        send_telegram_message(messagez)
+        messagezx = f"START SERVER : {server_name}"
+        send_telegram_message(messagezx)
         alaki = alaki + 1
+        time.sleep(1)
     sniff_traffic(white_list)
 
 
