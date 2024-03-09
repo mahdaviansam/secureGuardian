@@ -1,12 +1,12 @@
 # Stop and disable the old service if it exists
-sudo systemctl stop secureGuardian
-sudo systemctl disable secureGuardian
+systemctl stop secureGuardian
+systemctl disable secureGuardian
 
 # Remove the old service file
-sudo rm -rf /etc/systemd/system/secureGuardian.service
+rm -rf /etc/systemd/system/secureGuardian.service
 
 # Remove the old script if it exists
-sudo rm -rf /usr/local/bin/secureGuardian
+rm -rf /usr/local/bin/secureGuardian
 
 # Remove any old dependencies
 # pip uninstall -y scapy requests
@@ -18,17 +18,17 @@ curl -o secureGuardian.py https://raw.githubusercontent.com/mahdaviansam/secureG
 chmod +x secureGuardian.py
 
 # Move it to /usr/local/bin
-sudo mv secureGuardian.py /usr/local/bin/secureGuardian
+mv secureGuardian.py /usr/local/bin/secureGuardian
 
 # Set ownership
-sudo chown root:root /usr/local/bin/secureGuardian
+chown root:root /usr/local/bin/secureGuardian
 
 # Install dependencies
 # Install dependencies
 pip install scapy requests
 
 # Set up systemd service
-sudo tee /etc/systemd/system/secureGuardian.service >/dev/null <<EOF
+tee /etc/systemd/system/secureGuardian.service >/dev/null <<EOF
 [Unit]
 Description=Secure Guardian Service
 After=network.target
@@ -43,11 +43,11 @@ WantedBy=multi-user.target
 EOF
 
 # Reload systemd
-sudo systemctl daemon-reload
+systemctl daemon-reload
 
 # Enable and start the service
-sudo systemctl enable secureGuardian
-sudo systemctl start secureGuardian
+systemctl enable secureGuardian
+systemctl start secureGuardian
 
 echo "SecureGuardian installed successfully!"
 
