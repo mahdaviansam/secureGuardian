@@ -1,55 +1,40 @@
 #!/bin/bash
 
-set -e
+# Download the script
+curl -o SecureGuardian.py https://raw.githubusercontent.com/mahdaviansam/secureGuardian/main/SecureGuardian.py
 
-# Function to check if a command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
-}
+# Make it executable
+chmod +x SecureGuardian.py
 
-# Check if Python 3 and pip are installed
-if ! command_exists python3 || ! command_exists pip3; then
-    echo "Error: Python 3 or pip is not installed. Please install them first."
-    exit 1
-fi
+# Move it to /usr/local/bin
+sudo mv SecureGuardian.py /usr/local/bin/secureGuardian
 
-# Install required packages
-echo "Installing required packages..."
-apt update
-apt install -y python3-pip
+# Set ownership
+sudo chown root:root /usr/local/bin/secureGuardian
 
-# Remove existing files and directories before installation
-echo "Removing existing files and directories..."
-rm -rf /usr/local/bin/secureGuardian
-rm -rf /tmp/secureGuardian
+# Install dependencies
+pip install scapy requests
 
-# Download the package files
-echo "Downloading package files..."
-link="https://raw.githubusercontent.com/mahdaviansam/secureGuardian/main/"
-file="secureGuardian.py"
+# Set up systemd service
+sudo tee /etc/systemd/system/secureGuardian.service >/dev/null <<EOF
+[Unit]
+Description=Secure Guardian Service
+After=network.target
 
-mkdir -p /tmp/secureGuardian
-echo "Downloading $file..."
-wget -q "${link}$file" -P "/tmp/secureGuardian"
-echo "Downloaded $file"
+[Service]
+ExecStart=/usr/local/bin/secureGuardian
+Restart=on-failure
+RestartSec=3
 
-# Move file to appropriate directory
-echo "Moving files to appropriate directory..."
-mkdir -p /usr/local/bin/secureGuardian
-mv "/tmp/secureGuardian/$file" "/usr/local/bin/secureGuardian/"
+[Install]
+WantedBy=multi-user.target
+EOF
 
-# Add execute permissions to file
-echo "Adding execute permissions to file..."
-chmod +x "/usr/local/bin/secureGuardian/$file"
+# Reload systemd
+sudo systemctl daemon-reload
 
-# Update PATH variable if not already done
-if ! grep -q "/usr/local/bin/secureGuardian" ~/.bashrc; then
-    echo 'export PATH="$PATH:/usr/local/bin/secureGuardian"' >>~/.bashrc
-    source ~/.bashrc
-fi
+# Enable and start the service
+sudo systemctl enable secureGuardian
+sudo systemctl start secureGuardian
 
-echo "secureGuardian package installed successfully."
-
-# Install Python dependencies
-echo "Installing Python dependencies..."
-pip3 install requests scapy
+echo "SecureGuardian installed successfully!"
