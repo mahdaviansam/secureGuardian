@@ -10,7 +10,7 @@ from scapy.all import *
 
 result = subprocess.run("hostname", shell=True, capture_output=True, text=True)
 restart_time = 300
-threshold = 2
+threshold = 5
 server_name = result.stdout.strip()
 alaki = 0
 traffic_counts = {}
@@ -23,6 +23,9 @@ white_list = [
     "157.240.241.62",
     "157.240.11.51",
     "216.239.35.8",
+    "138.2.159.70",
+    "130.162.37.51",
+    "157.240.252.62",
 ]
 
 
@@ -111,7 +114,7 @@ def print_ip_ownership(ip_ranges):
 start_time = time.time()
 while True:
     current_time = time.time()
-    print("SALAMMMMM")
+    print("SALAMMMMM", traffic_counts)
     ip_ranges = find_ip_ranges(traffic_counts, 3)
     print_ip_ownership(ip_ranges)
     if current_time - start_time >= restart_time:
