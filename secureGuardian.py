@@ -97,10 +97,19 @@ def get_ip_ownership(ip, white_list):
             white_list.append(ip)
             return data["org"]
         else:
-            command = f"iptables -A OUTPUT -d {ip_prefix}.0/24 -p udp -j DROP"
-            subprocess.run(command, shell=True)
-            message = f"BLOCK : {ip_prefix}.0/24 roye server {server_name}"
-            send_telegram_message(message)
+            # command = f"iptables -A OUTPUT -d {ip_prefix}.0/24 -p udp -j DROP"
+            # subprocess.run(command, shell=True)
+            command_check = f"iptables -C OUTPUT -d {ip_prefix}.0/24 -p udp -j DROP"
+            result = subprocess.run(command_check, shell=True)
+            if result.returncode != 0:
+                command_add = f"iptables -A OUTPUT -d {ip_prefix}.0/24 -p udp -j DROP"
+                subprocess.run(command_add, shell=True)
+                print(f"Rule added for {ip_prefix}.0/24 successfully!")
+                message = f"BLOCK : {ip_prefix}.0/24 roye server {server_name}"
+                send_telegram_message(message)
+            else:
+                print(f"Rule already exists for {ip_prefix}.0/24, skipping...")
+
             return "Unknown"
 
 
