@@ -109,7 +109,6 @@ def get_ip_ownership(ip, white_list):
                 send_telegram_message(message)
             else:
                 print(f"Rule already exists for {ip_prefix}.0/24, skipping...")
-
             return "Unknown"
 
 
