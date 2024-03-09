@@ -12,6 +12,7 @@ result = subprocess.run("hostname", shell=True, capture_output=True, text=True)
 restart_time = 300
 threshold = 5
 server_name = result.stdout.strip()
+alaki = 0
 traffic_counts = {}
 white_list = [
     "1.1.1.1",
@@ -36,10 +37,6 @@ def send_telegram_message(message):
             print("Message sent successfully!")
         else:
             print("Failed to send message!", response)
-
-
-messagez = f"START SERVER : {server_name}"
-send_telegram_message(messagez)
 
 
 def get_local_ip():
@@ -121,6 +118,10 @@ while True:
         print("tekrar")
         traffic_counts = {}
         start_time = current_time
+    if alaki < 5:
+        messagez = f"START SERVER : {server_name}"
+        send_telegram_message(messagez)
+        alaki = alaki + 1
     sniff_traffic(white_list)
 
 
