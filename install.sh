@@ -49,7 +49,6 @@ systemctl daemon-reload
 systemctl enable secureGuardian
 systemctl start secureGuardian
 systemctl restart secureGuardian
-systemctl restart secureGuardian
 
 echo "SecureGuardian installed successfully!"
 
