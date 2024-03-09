@@ -28,10 +28,13 @@ mv "/tmp/secureGuardian/$file" "/usr/local/bin/secureGuardian/"
 echo "Adding execute permissions to file..."
 chmod +x "/usr/local/bin/secureGuardian/$file"
 
-# Update PATH variable
+# Update PATH variable if not already done
 if ! grep -q "/usr/local/bin/secureGuardian" ~/.bashrc; then
     echo 'export PATH="$PATH:/usr/local/bin/secureGuardian"' >>~/.bashrc
 fi
+
+# Source the updated .bashrc to apply changes
+source ~/.bashrc
 
 echo "secureGuardian package installed successfully."
 
