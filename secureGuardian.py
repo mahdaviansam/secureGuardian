@@ -24,13 +24,8 @@ white_list = [
 
 
 if len(sys.argv) == 2:
-    if sys.argv[1] == "stop":
-        # Stop the service
-        subprocess.run(["systemctl", "stop", "secureGuardian"])
-        sys.exit(0)
-    else:
-        server_name = sys.argv[1]
-        print(f"{server_name} name server")
+    server_name = sys.argv[1]
+    print(f"{server_name} name server")
 elif len(sys.argv) > 2:
     print("Usage: python SecureGuardian.py <server_name>")
     sys.exit(1)
