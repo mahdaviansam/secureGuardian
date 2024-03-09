@@ -2,21 +2,20 @@
 
 import sys
 import time
+import argparse
 import requests
+import threading
 import subprocess
 from scapy.all import *
-import threading
 
 
-def main():
+def main(server_name):
     global restart_time
     global threshold
-    global server_name
     global traffic_counts
     global white_list
     restart_time = 300
     threshold = 5
-    server_name = ""
     traffic_counts = {}
     white_list = [
         "1.1.1.1",
@@ -130,6 +129,12 @@ def main():
 
 
 if __name__ == "__main__":
-    thread = threading.Thread(target=main, name="main")
-    thread.daemon = True  # Set the thread as a daemon
-    thread.start()
+    parser = argparse.ArgumentParser(description="Description of your program")
+    parser.add_argument("server_name", type=str, help="The name of the server")
+    args = parser.parse_args()
+
+    download_thread = threading.Thread(
+        target=main, args=(args.server_name,), name="main"
+    )
+    download_thread.daemon = True  # Set the thread as a daemon
+    download_thread.start()
