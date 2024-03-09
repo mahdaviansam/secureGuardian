@@ -1,20 +1,18 @@
 #!/usr/bin/python3
 
-import sys
+
 import time
 import requests
+import threading
 import subprocess
 from scapy.all import *
-import threading
 
 
-def main(server_name):
-    global restart_time
-    global threshold
-    global traffic_counts
-    global white_list
+def background():
+    result = subprocess.run("hostname", shell=True, capture_output=True, text=True)
     restart_time = 300
     threshold = 5
+    server_name = result.stdout.strip()
     traffic_counts = {}
     white_list = [
         "1.1.1.1",
@@ -73,7 +71,6 @@ def main(server_name):
         )
 
     def find_ip_ranges(data, prefix_length):
-        # ye ip migire 3 bakhshe aval ro negah midare
         ranges = {}
         for ip in data:
             prefix = ".".join(ip.split(".")[:prefix_length])
@@ -88,7 +85,7 @@ def main(server_name):
             url = f"https://ipinfo.io/{ip}/json"
             response = requests.get(url)
             data = response.json()
-            message = data
+            message = f"INFO : {data} roye server {server_name}"
             send_telegram_message(message)
             if "org" in data:
                 white_list.append(ip)
@@ -96,8 +93,8 @@ def main(server_name):
             else:
                 command = f"iptables -A OUTPUT -d {ip_prefix}.0/24 -p udp -j DROP"
                 subprocess.run(command, shell=True)
-                messagez = f"bayad block she : {ip_prefix}.0/24"
-                send_telegram_message(messagez)
+                message = f"BLOCK : {ip_prefix}.0/24 roye server {server_name}"
+                send_telegram_message(message)
                 return "Unknown"
 
     def print_ip_ownership(ip_ranges):
@@ -118,12 +115,5 @@ def main(server_name):
         sniff_traffic(white_list)
 
 
-if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        server_name = sys.argv[1]
-    else:
-        server_name = input("Enter server name: ")
-
-    download_thread = threading.Thread(target=main, args=(server_name,), name="main")
-    download_thread.daemon = True  # Set the thread as a daemon
-    download_thread.start()
+back = threading.Thread(name="background", target=background)
+back.start()
