@@ -34,9 +34,10 @@ mv /tmp/secureGuardian/* /usr/local/bin/secureGuardian/
 echo "Adding execute permissions to files..."
 chmod +x /usr/local/bin/secureGuardian/*.py
 
+# Update PATH variable
+echo 'export PATH="$PATH:/usr/local/bin/secureGuardian"' >>~/.bashrc
+
 echo "secureGuardian package installed successfully."
 
 # Install Python dependencies
 pip install requests scapy
-
-#! Install required Python packages
