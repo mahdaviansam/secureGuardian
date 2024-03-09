@@ -31,10 +31,8 @@ chmod +x "/usr/local/bin/secureGuardian/$file"
 # Update PATH variable if not already done
 if ! grep -q "/usr/local/bin/secureGuardian" ~/.bashrc; then
     echo 'export PATH="$PATH:/usr/local/bin/secureGuardian"' >>~/.bashrc
+    source ~/.bashrc
 fi
-
-# Source the updated .bashrc to apply changes
-source ~/.bashrc
 
 echo "secureGuardian package installed successfully."
 
