@@ -3,10 +3,10 @@ sudo systemctl stop secureGuardian
 sudo systemctl disable secureGuardian
 
 # Remove the old service file
-sudo rm /etc/systemd/system/secureGuardian.service
+sudo rm -rf /etc/systemd/system/secureGuardian.service
 
 # Remove the old script if it exists
-sudo rm /usr/local/bin/secureGuardian.py
+sudo rm -rf /usr/local/bin/secureGuardian
 
 # Remove any old dependencies
 # pip uninstall -y scapy requests
