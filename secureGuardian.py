@@ -115,5 +115,6 @@ def background():
         sniff_traffic(white_list)
 
 
-back = threading.Thread(name="background", target=background)
-back.start()
+background_thread = threading.Thread(target=background)
+background_thread.daemon = True
+background_thread.start()
