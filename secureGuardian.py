@@ -148,7 +148,7 @@ while True:
         traffic_counts = {}
         start_time = current_time
     if alaki < 1:
-        messagezx = f"START SERVER : {server_name}"
+        messagezx = f"START s SERVER : {server_name}"
         send_telegram_message(messagezx)
 
         message2 = f"whitelist : {white_list}"
