@@ -150,6 +150,9 @@ while True:
     if alaki < 1:
         messagezx = f"START SERVER : {server_name}"
         send_telegram_message(messagezx)
+
+        message2 = f"whitelist : {white_list}"
+        send_telegram_message(message2)
         alaki = alaki + 1
         time.sleep(4)
     sniff_traffic(white_list)
