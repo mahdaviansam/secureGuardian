@@ -82,9 +82,6 @@ def sniff_traffic(white_list):
     white_list_filter = (
         " and not (host " + " or host ".join(white_list) + ")" if white_list else " "
     )
-
-    message3 = f"white_list_filter : {white_list_filter}"
-    send_telegram_message(message3)
     time.sleep(0.01)
     sniff(
         filter=f"udp and not (port 53 or port 443) {white_list_filter}",
