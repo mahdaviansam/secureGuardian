@@ -144,7 +144,7 @@ while True:
         # message = f"CHECK HEALTH : {server_name} traffic_counts: {traffic_counts}"
         # send_telegram_message(message)
         message = f"whitelist : {white_list}"
-        # send_telegram_message(message)
+        send_telegram_message(message)
         traffic_counts = {}
         start_time = current_time
     if alaki < 1:
