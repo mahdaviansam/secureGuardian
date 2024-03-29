@@ -15,31 +15,19 @@ server_name = result.stdout.strip()
 alaki = 0
 traffic_counts = {}
 
-white_list = []
-
-
-def add_to_whitelist(ip):
-    url = "http://65.109.214.187:9000/whitelist/add"
-    payload = {"ip": ip}
-    response = requests.post(url, json=payload)
-    if response.ok:
-        print(f"IP {ip} successfully added to the whitelist.")
-        return True
-    else:
-        print(f"Failed to add IP {ip} to the whitelist.")
-        return False
-
-
-def get_whitelist():
-    url = "http://65.109.214.187:9000/whitelist/all"
-    response = requests.get(url)
-    if response.ok:
-        data = response.json()
-        whitelist = data.get("data", [])
-        return whitelist
-    else:
-        print("Failed to fetch whitelist.")
-        return []
+white_list = [
+    "1.1.1.1",
+    "8.8.8.8",
+    "17.253.20.253",
+    "17.253.20.125",
+    "31.13.88.62",
+    "157.240.241.62",
+    "157.240.11.51",
+    "216.239.35.8",
+    "138.2.159.70",
+    "130.162.37.51",
+    "157.240.252.62",
+]
 
 
 def send_telegram_message(message):
@@ -63,10 +51,8 @@ def get_local_ip():
 
 
 my_ip = get_local_ip()
-white_list = get_whitelist()
 
 
-# functioni ke sniff azash estefade mikone
 def process_packet(packet):
     if UDP in packet and IP in packet:
         source_ip = packet[IP].src
@@ -109,12 +95,14 @@ def get_ip_ownership(ip, white_list):
         message = f"INFO : {data} roye server {server_name}"
         send_telegram_message(message)
         if "org" in data:
-            # inja
-            add_to_whitelist(ip)
+            url = "http://65.109.214.187:9000/whitelist/add"
+            data = {"ip": ip}
+            response = requests.post(url, data=data)
             white_list.append(ip)
-            white_list = get_whitelist()
             return data["org"]
         else:
+            # command = f"iptables -A OUTPUT -d {ip_prefix}.0/24 -p udp -j DROP"
+            # subprocess.run(command, shell=True)
             command_check = f"iptables -C OUTPUT -d {ip_prefix}.0/24 -p udp -j DROP"
             result = subprocess.run(command_check, shell=True)
             if result.returncode != 0:
@@ -142,8 +130,6 @@ while True:
     print_ip_ownership(ip_ranges)
     if current_time - start_time >= restart_time:
         # message = f"CHECK HEALTH : {server_name} traffic_counts: {traffic_counts}"
-        # send_telegram_message(message)
-        message = f"whitelist : {white_list}"
         # send_telegram_message(message)
         traffic_counts = {}
         start_time = current_time
