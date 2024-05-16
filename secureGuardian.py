@@ -10,7 +10,7 @@ from scapy.all import *
 
 result = subprocess.run("hostname", shell=True, capture_output=True, text=True)
 restart_time = 300
-threshold = 5
+threshold = 2
 server_name = result.stdout.strip()
 alaki = 0
 traffic_counts = {}
@@ -82,7 +82,7 @@ def sniff_traffic(white_list):
     white_list_filter = (
         " and not (host " + " or host ".join(white_list) + ")" if white_list else " "
     )
-    time.sleep(0.01)
+    time.sleep(0.02)
     sniff(
         filter=f"udp and not (port 53 or port 443) {white_list_filter}",
         prn=process_packet,
@@ -101,6 +101,7 @@ def find_ip_ranges(data, prefix_length):
 
 
 def get_ip_ownership(ip, white_list):
+    print('SEDA SHOD')
     ip_prefix = ".".join(ip.split(".")[:3])
     if not any(white_ip.startswith(ip_prefix) for white_ip in white_list):
         url = f"https://ipinfo.io/{ip}/json"
@@ -113,6 +114,7 @@ def get_ip_ownership(ip, white_list):
             add_to_whitelist(ip)
             white_list.append(ip)
             white_list = get_whitelist()
+            print(f"data ====> {data}")
             return data["org"]
         else:
             command_check = f"iptables -C OUTPUT -d {ip_prefix}.0/24 -p udp -j DROP"
@@ -146,8 +148,11 @@ while True:
         # message = f"whitelist : {white_list}"
         # send_telegram_message(message)
         traffic_counts = {}
+        print(f"traffic_counts {traffic_counts}")
+        print(f"white_list {white_list}")
         start_time = current_time
     if alaki < 1:
+        print("AZ AVAL")
         messagezx = f"START z SERVER : {server_name}"
         send_telegram_message(messagezx)
 
