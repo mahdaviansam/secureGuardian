@@ -10,7 +10,7 @@ from scapy.all import *
 
 result = subprocess.run("hostname", shell=True, capture_output=True, text=True)
 restart_time = 300
-threshold = 2
+threshold = 4
 server_name = result.stdout.strip()
 alaki = 0
 traffic_counts = {}
